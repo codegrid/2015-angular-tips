@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Controller間で値を共有する</title>
+  <style>
+    h2,h3 { margin: 0 0 10px; }
+
+    h2 { font-size: 20px }
+    h3 { font-size: 16px }
+
+    .parent {
+      border: 1px solid #333;
+      padding: 20px;
+    }
+
+    .child {
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin: 20px 0;
+    }
+  </style>
+  <script src="https://code.angularjs.org/1.4.3/angular.min.js"></script>
+</head>
+<body ng-app="app">
+  <div ng-controller="Controller1" class="parent">
+    <h2>Controller1</h2>
+    <div ng-controller="Controller2" class="child">
+      <h2>Controller2</h2>
+      <button ng-click="click()">Click</button>
+      <div ng-controller="Controller3" class="child">
+        <h2>Controller3</h2>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var app = angular.module('app', []);
+
+    app.controller('Controller1', function($scope) {
+      $scope.$on('clickButton', function() {
+        alert('I am Controller1!');
+      });
+    });
+
+    app.controller('Controller2', function($scope, $rootScope) {
+      $scope.click = function() {
+        $rootScope.$broadcast('clickButton');
+      };
+      $scope.$on('clickButton', function() {
+        alert('I am Controller2!');
+      });
+    });
+
+    app.controller('Controller3', function($scope) {
+      $scope.$on('clickButton', function() {
+        alert('I am Controller3!');
+      });
+    });
+  </script>
+</body>
+</html>
+
+

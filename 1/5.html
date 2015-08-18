@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Controller間で値を共有する</title>
+  <style>
+    h2,h3 { margin: 0 0 10px; }
+
+    h2 { font-size: 20px }
+    h3 { font-size: 16px }
+
+    .parent {
+      border: 1px solid #333;
+      padding: 20px;
+    }
+
+    .child {
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin: 20px 0;
+    }
+  </style>
+  <script src="https://code.angularjs.org/1.4.3/angular.min.js"></script>
+</head>
+<body ng-app="app">
+  <div ng-controller="ParentCtrl" class="parent">
+    <h2>ParentCtrl</h2>
+    Message here
+    <input type="text" ng-model="parentMessage" ng-change="changeParentMessage()">
+    <div ng-controller="ChildCtrl" class="child">
+      <h3>ChildCtrl</h3>
+      Change parent message<br>
+      <input type="text" ng-model="childMessage" ng-change="changeChildMessage()">
+    </div>
+  </div>
+
+  <script>
+    var app = angular.module('app', []);
+
+    app.controller('ParentCtrl', function($scope) {
+      $scope.parentMessage = '';
+
+      $scope.changeParentMessage = function() {
+        $scope.$broadcast('parentChanged', $scope.parentMessage);
+      };
+
+      $scope.$on('childChanged', function(e, message) {
+        $scope.parentMessage = message;
+      });
+    });
+
+    app.controller('ChildCtrl', function($scope) {
+      $scope.childMessage = '';
+
+      $scope.changeChildMessage = function() {
+        $scope.$emit('childChanged', $scope.childMessage);
+      };
+
+      $scope.$on('parentChanged', function(e, message) {
+        $scope.childMessage = message;
+      });
+    });
+  </script>
+</body>
+</html>
+

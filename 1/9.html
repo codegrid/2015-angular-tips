@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Controller間で値を共有する</title>
+  <style>
+    h2,h3 { margin: 0 0 10px; }
+
+    h2 { font-size: 20px }
+    h3 { font-size: 16px }
+
+    .parent {
+      border: 1px solid #333;
+      padding: 20px;
+    }
+
+    .child {
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin: 20px 0;
+    }
+  </style>
+  <script src="https://code.angularjs.org/1.4.3/angular.min.js"></script>
+</head>
+<body ng-app="app">
+  <div ng-controller="ParentCtrl as parent" class="parent">
+    <h2>ParentCtrl</h2>
+    Message here
+    <input type="text" ng-model="parent.message" ng-change="parent.change()">
+    <div ng-controller="ChildCtrl as child" class="child">
+      <h3>ChildCtrl</h3>
+      Change parent message<br>
+      <input type="text" ng-model="child.message" ng-change="child.change()">
+    </div>
+  </div>
+
+  <script>
+    var app = angular.module('app', []);
+
+    app.service('store', function($rootScope) {
+      function Store() {
+        this.data = '';
+      }
+
+      // データを変更する
+      Store.prototype.set = function(data) {
+        this.data = data;
+        $rootScope.$emit('updateData');
+      };
+
+      // データを取得する
+      Store.prototype.get = function() {
+        return this.data;
+      };
+
+      // データが変更されたら実行するコールバック関数を設定する
+      Store.prototype.addListner = function(callback) {
+        $rootScope.$on('updateData', callback);
+      };
+
+      return new Store();
+    });
+
+    app.controller('ParentCtrl', function($scope, store) {
+      var vm = this;
+      vm.message = store.get();
+
+      vm.change = function() {
+        store.set(vm.message);
+      };
+
+      store.addListner(function() {
+        vm.message = store.get();
+      });
+    });
+
+    app.controller('ChildCtrl', function($scope, store) {
+      var vm = this;
+      vm.message = store.get();
+
+      vm.change = function() {
+        store.set(vm.message);
+      };
+
+      store.addListner(function() {
+        vm.message = store.get();
+      });
+    });
+  </script>
+</body>
+</html>
+
+
