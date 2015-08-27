@@ -43,18 +43,18 @@
         this.data = '';
       }
 
-      // データを変更する
+      // 値を変更する
       Store.prototype.set = function(data) {
         this.data = data;
         $rootScope.$emit('updateData');
       };
 
-      // データを取得する
+      // 値を取得する
       Store.prototype.get = function() {
         return this.data;
       };
 
-      // データが変更されたら実行するコールバック関数を設定する
+      // 値が変更されたら実行するコールバック関数を設定する
       Store.prototype.addListner = function(callback) {
         $rootScope.$on('updateData', callback);
       };
