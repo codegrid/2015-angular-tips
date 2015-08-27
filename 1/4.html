@@ -46,7 +46,7 @@
 
     app.controller('Controller2', function($scope) {
       $scope.click = function() {
-        $scope.$emit('clickButton');
+        $scope.$broadcast('clickButton');
       };
       $scope.$on('clickButton', function() {
         alert('I am Controller2!');

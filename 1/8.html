@@ -23,27 +23,46 @@
   </style>
   <script src="https://code.angularjs.org/1.4.3/angular.min.js"></script>
 </head>
-<body ng-app="demo">
-  <div ng-controller="ParentCtrl as parent" class="parent">
+<body ng-app="app">
+  <div ng-controller="ParentCtrl" class="parent">
     <h2>ParentCtrl</h2>
     Message here
-    <input type="text" ng-model="parent.message">
-    <div ng-controller="ChildCtrl as child" class="child">
+    <input type="text" ng-model="parentMessage" ng-change="changeParentMessage()">
+    <div ng-controller="ChildCtrl" class="child">
       <h3>ChildCtrl</h3>
       Change parent message<br>
-      <input type="text" ng-model="parent.message">
+      <input type="text" ng-model="childMessage" ng-change="changeChildMessage()">
     </div>
   </div>
 
   <script>
-    var demo = angular.module('demo', []);
+    var app = angular.module('app', []);
 
-    demo.controller('ParentCtrl', function($scope) {
-      this.message = 'Hello World!!'
+    app.controller('ParentCtrl', function($scope, $rootScope) {
+      $scope.parentMessage = '';
+
+      $scope.changeParentMessage = function() {
+        $rootScope.$broadcast('changed', $scope.parentMessage);
+      };
+
+      $scope.$on('changed', function(e, message) {
+        $scope.parentMessage = message;
+      });
     });
 
-    demo.controller('ChildCtrl', function($scope) { });
+    app.controller('ChildCtrl', function($scope, $rootScope) {
+      $scope.childMessage = '';
+
+      $scope.changeChildMessage = function() {
+        $rootScope.$broadcast('changed', $scope.childMessage);
+      };
+
+      $scope.$on('changed', function(e, message) {
+        $scope.childMessage = message;
+      });
+    });
   </script>
 </body>
 </html>
+
 

@@ -24,42 +24,44 @@
   <script src="https://code.angularjs.org/1.4.3/angular.min.js"></script>
 </head>
 <body ng-app="app">
-  <div ng-controller="Controller1" class="parent">
-    <h2>Controller1</h2>
-    <div ng-controller="Controller2" class="child">
-      <h2>Controller2</h2>
-      <button ng-click="click()">Click</button>
-      <div ng-controller="Controller3" class="child">
-        <h2>Controller3</h2>
-      </div>
+  <div ng-controller="ParentCtrl" class="parent">
+    <h2>ParentCtrl</h2>
+    Message here
+    <input type="text" ng-model="parentMessage" ng-change="changeParentMessage()">
+    <div ng-controller="ChildCtrl" class="child">
+      <h3>ChildCtrl</h3>
+      Change parent message<br>
+      <input type="text" ng-model="childMessage" ng-change="changeChildMessage()">
     </div>
   </div>
 
   <script>
     var app = angular.module('app', []);
 
-    app.controller('Controller1', function($scope) {
-      $scope.$on('clickButton', function() {
-        alert('I am Controller1!');
-      });
-    });
+    app.controller('ParentCtrl', function($scope) {
+      $scope.parentMessage = '';
 
-    app.controller('Controller2', function($scope, $rootScope) {
-      $scope.click = function() {
-        $rootScope.$broadcast('clickButton');
+      $scope.changeParentMessage = function() {
+        $scope.$broadcast('parentChanged', $scope.parentMessage);
       };
-      $scope.$on('clickButton', function() {
-        alert('I am Controller2!');
+
+      $scope.$on('childChanged', function(e, message) {
+        $scope.parentMessage = message;
       });
     });
 
-    app.controller('Controller3', function($scope) {
-      $scope.$on('clickButton', function() {
-        alert('I am Controller3!');
+    app.controller('ChildCtrl', function($scope) {
+      $scope.childMessage = '';
+
+      $scope.changeChildMessage = function() {
+        $scope.$emit('childChanged', $scope.childMessage);
+      };
+
+      $scope.$on('parentChanged', function(e, message) {
+        $scope.childMessage = message;
       });
     });
   </script>
 </body>
 </html>
-
 

@@ -23,41 +23,26 @@
   </style>
   <script src="https://code.angularjs.org/1.4.3/angular.min.js"></script>
 </head>
-<body ng-app="app">
-  <div ng-controller="Controller1" class="parent">
-    <h2>Controller1</h2>
-    <div ng-controller="Controller2" class="child">
-      <h2>Controller2</h2>
-      <button ng-click="click()">Click</button>
-      <div ng-controller="Controller3" class="child">
-        <h2>Controller3</h2>
-      </div>
+<body ng-app="demo">
+  <div ng-controller="ParentCtrl as parent" class="parent">
+    <h2>ParentCtrl</h2>
+    Message here
+    <input type="text" ng-model="parent.message">
+    <div ng-controller="ChildCtrl as child" class="child">
+      <h3>ChildCtrl</h3>
+      Change parent message<br>
+      <input type="text" ng-model="parent.message">
     </div>
   </div>
 
   <script>
-    var app = angular.module('app', []);
+    var demo = angular.module('demo', []);
 
-    app.controller('Controller1', function($scope) {
-      $scope.$on('clickButton', function() {
-        alert('I am Controller1!');
-      });
+    demo.controller('ParentCtrl', function($scope) {
+      this.message = 'Hello World!!'
     });
 
-    app.controller('Controller2', function($scope) {
-      $scope.click = function() {
-        $scope.$broadcast('clickButton');
-      };
-      $scope.$on('clickButton', function() {
-        alert('I am Controller2!');
-      });
-    });
-
-    app.controller('Controller3', function($scope) {
-      $scope.$on('clickButton', function() {
-        alert('I am Controller3!');
-      });
-    });
+    demo.controller('ChildCtrl', function($scope) { });
   </script>
 </body>
 </html>
