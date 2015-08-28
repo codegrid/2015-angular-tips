@@ -21,7 +21,7 @@
       margin: 20px 0;
     }
   </style>
-  <script src="https://code.angularjs.org/1.4.3/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
 </head>
 <body ng-app="app">
   <div ng-controller="ParentCtrl as parent" class="parent">
@@ -63,7 +63,7 @@
       };
 
       // 値が変更されたら実行するコールバック関数を設定する
-      Store.prototype.addListner = function(callback) {
+      Store.prototype.addDataUpdateListener = function(callback) {
         $rootScope.$on('updateData', callback);
       };
 
@@ -78,7 +78,7 @@
         store.set(vm.message);
       };
 
-      store.addListner(function() {
+      store.addDataUpdateListener(function() {
         vm.message = store.get();
       });
     });
@@ -91,7 +91,7 @@
         store.set(vm.message);
       };
 
-      store.addListner(function() {
+      store.addDataUpdateListener(function() {
         vm.message = store.get();
       });
     });
@@ -106,7 +106,7 @@
         store.set(vm.message);
       };
 
-      store.addListner(function() {
+      store.addDataUpdateListener(function() {
         vm.message = store.get();
       });
     });
