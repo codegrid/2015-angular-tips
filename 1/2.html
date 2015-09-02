@@ -27,11 +27,11 @@
   <div ng-controller="ParentCtrl" class="parent">
     <h2>ParentCtrl</h2>
     Message here
-    <input type="text" ng-model="uiValues.message">
+    <input type="text" ng-model="vm.message">
     <div ng-controller="ChildCtrl" class="child">
       <h3>ChildCtrl</h3>
       Change parent message<br>
-      <input type="text" ng-model="uiValues.message">
+      <input type="text" ng-model="vm.message">
     </div>
   </div>
 
@@ -40,8 +40,8 @@
 
     app.controller('ParentCtrl', function($scope) {
       // 中間オブジェクトを作ってプロパティを紐付ける
-      $scope.uiValues = {};
-      $scope.uiValues.message = 'Hello World!!'
+      $scope.vm = {};
+      $scope.vm.message = 'Hello World!!'
     });
 
     app.controller('ChildCtrl', function($scope) { });
