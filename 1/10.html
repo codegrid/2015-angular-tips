@@ -47,27 +47,23 @@
     var app = angular.module('app', []);
 
     app.service('store', function($rootScope) {
-      function Store() {
-        this.data = '';
-      }
+      var storedData = '';
 
       // 値を変更する
-      Store.prototype.set = function(data) {
-        this.data = data;
-        $rootScope.$emit('updateData');
+      this.set = function(data) {
+        storedData = data;
+        $rootScope.$emit('dataUpdated');
       };
 
       // 値を取得する
-      Store.prototype.get = function() {
-        return this.data;
+      this.get = function() {
+        return storedData;
       };
 
       // 値が変更されたら実行するコールバック関数を設定する
-      Store.prototype.addDataUpdateListener = function(callback) {
-        $rootScope.$on('updateData', callback);
+      this.addDataUpdateListener = function(callback) {
+        $rootScope.$on('dataUpdated', callback);
       };
-
-      return new Store();
     });
 
     app.controller('ParentCtrl', function($scope, store) {

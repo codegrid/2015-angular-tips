@@ -39,22 +39,22 @@
     var app = angular.module('app', []);
 
     app.controller('Controller1', function($scope) {
-      $scope.$on('clickButton', function() {
+      $scope.$on('buttonClicked', function() {
         alert('I am Controller1!');
       });
     });
 
     app.controller('Controller2', function($scope, $rootScope) {
       $scope.click = function() {
-        $rootScope.$broadcast('clickButton');
+        $rootScope.$broadcast('buttonClicked');
       };
-      $scope.$on('clickButton', function() {
+      $scope.$on('buttonClicked', function() {
         alert('I am Controller2!');
       });
     });
 
     app.controller('Controller3', function($scope) {
-      $scope.$on('clickButton', function() {
+      $scope.$on('buttonClicked', function() {
         alert('I am Controller3!');
       });
     });

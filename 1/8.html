@@ -42,10 +42,10 @@
       $scope.parentMessage = '';
 
       $scope.changeParentMessage = function() {
-        $rootScope.$broadcast('changed', $scope.parentMessage);
+        $rootScope.$broadcast('messageChanged', $scope.parentMessage);
       };
 
-      $scope.$on('changed', function(e, message) {
+      $scope.$on('messageChanged', function(e, message) {
         $scope.parentMessage = message;
       });
     });
@@ -54,10 +54,10 @@
       $scope.childMessage = '';
 
       $scope.changeChildMessage = function() {
-        $rootScope.$broadcast('changed', $scope.childMessage);
+        $rootScope.$broadcast('messageChanged', $scope.childMessage);
       };
 
-      $scope.$on('changed', function(e, message) {
+      $scope.$on('messageChanged', function(e, message) {
         $scope.childMessage = message;
       });
     });
